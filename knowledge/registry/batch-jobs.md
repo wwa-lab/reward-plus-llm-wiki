@@ -17,7 +17,7 @@
 3. "前置依赖"只填**有证据**的依赖（作业、文件到达、时间窗口）；推断的依赖在知识页里单列一栏。
 4. 涉及程序填 `PROG-####`。
 5. **更新文件头部的"当前最大 ID"**。
-6. 首份作业知识页建立时，同步补建 `templates/batch-job-template.md`；在此之前暂用 [program-template](../../templates/program-template.md) 的程序段落 + 本表字段。
+6. 用 [batch-job-template](../../templates/batch-job-template.md) 在 `knowledge/batch-and-jobs/` 建知识页，**同一次提交完成**。
 
 ## 状态取值
 

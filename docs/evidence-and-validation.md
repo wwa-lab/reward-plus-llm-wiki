@@ -4,7 +4,7 @@ artifact_type: documentation
 status: NEEDS_REVIEW
 confidence: high
 created_at: 2026-10-09
-updated_at: 2026-10-09
+updated_at: 2026-10-10
 source_refs:
   - path: README.md
   - path: AGENTS.md
@@ -35,6 +35,27 @@ source_refs:
 **能拿多细就写多细；拿不到就写"位置未知"。** 编造行号比不写行号危害大得多。
 
 引用派生页面（知识页）时必须注明"派生"——它是**先前分析的证据**，不是系统行为的证据。
+
+### 引用写在哪：两处都写，各有用途
+
+| 位置 | 形态 | 谁在读 | 校验 |
+|---|---|---|---|
+| front matter 的 `source_refs` | 路径列表（YAML） | 机器 | `scripts/validate_repo.py` **会检查路径是否存在** |
+| 正文的"证据与来源引用"段 | 代码路径 + 定位键 | 人 | 不校验（但 markdown 链接形态会被查） |
+
+两处都要写。只写正文 → 机器查不到，路径写错无人发现；只写 front matter → 人翻页时看不到这条证据支持了什么。
+
+**演练教训（2026-10-10）**：最初只校验 markdown 链接，于是 front matter 里的 `source_refs` 路径写错、
+正文写成代码路径的证据全部**静默通过**。现在 `source_refs` 的路径存在性会被校验。
+
+### 引用"默认不提交"的材料
+
+配置快照（`raw/*/control-files/`）按约定默认不进版本库。引用它们时：
+
+* **照常写路径**，校验脚本会对这一类路径豁免存在性检查（只记 INFO，不报错）。
+* 在正文里**注明**"配置快照，默认未提交"，让 clone 仓库的人知道为什么打不开。
+* 仍然要在 `knowledge/registry/source-materials.md` 登记 `SRC-####`（含 LAN 路径）——
+  否则这份材料在仓库里就彻底失去线索了。
 
 ## 2. 证据强度
 

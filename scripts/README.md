@@ -21,13 +21,27 @@ python3 scripts/validate_repo.py
    **材料类型目录直接放在 `raw/` 根下 → ERROR**，因为那会丢掉"这批材料属于哪次交付"这个维度。
 3. **登记表**：14 张登记表是否齐全、能否解析出"当前最大 ID"、**首列（ID 列）**的前缀是否匹配本表。
    （其余列是关系引用，允许指向其他实体类型，不做前缀检查。）
-4. **ID**：知识页文件名是否符合 `<前缀>-####[-slug].md`；front matter 的 `id` 是否与文件名一致；是否已登记在对应登记表里；跨表有无重复 ID。
+4. **ID**：知识页文件名是否符合 `<前缀>-####[-slug].md`（**slug 只允许小写**）；front matter 的 `id` 是否与文件名一致；
+   是否已登记在对应登记表里；跨表有无重复 ID；**带 ID 的文件是否放进了登记目录**（放进 `knowledge/architecture/` 这类目录 → ERROR）。
 5. **front matter**：必填字段是否齐全；`status` 是否属于六个合法状态；`confidence` 是否合法；
    `EVIDENCE_FOUND` 是否有 `source_refs`；`SME_CONFIRMED` 是否有 `reviewed_by` / `reviewed_at`。
-6. **内部链接**：Markdown 相对链接是否指向存在的文件。
-7. **重复**：同一 ID 是否被两个文件占用。
+6. **证据引用**：`source_refs` 里的仓库内路径是否真的存在（不存在 → WARNING）。
+   落在 `raw/*/control-files/` 的引用按约定豁免（那些材料默认不提交，见 `.gitignore`），只记 INFO。
+7. **关系引用**：front matter 的关系字段（`related_programs` 等）与**登记表非 ID 列**里出现的 ID，
+   是否都已在对应登记表里登记（悬空引用 → WARNING）。
+8. **登记表 ↔ 知识页**：登记了但没有知识页（→ WARNING，`TERM-` / `SRC-` 这类"行即记录"的前缀除外）；
+   知识页 `status` 与登记表 `status` 不一致（→ WARNING，登记表是权威来源）。
+9. **`raw/` 孤儿目录**：`raw/PRJ-####-*/` 没有对应的 `PRJ-` 登记行 → WARNING。
+   （反向不检查：材料可以留在 LAN 上，登记行仍然有效。）
+10. **内部链接**：Markdown 相对链接是否指向存在的文件。
+11. **重复**：同一 ID 是否被两个文件占用。
 
 退出码：`0` = 无 ERROR；`1` = 有 ERROR。WARNING 与 INFO 不阻断，但要看一下。
+
+> **为什么要查证据和关系？** 2026-10-10 的合成数据端到端演练发现：原先只查"markdown 链接"和"ID 是否登记"，
+> 于是 `source_refs` 路径写错、`related_programs` 指向不存在的 ID、登记表里出现悬空引用、
+> 登记行与知识页状态打架——这些**都会静默通过**。而"证据可追溯"正是本仓库存在的理由，所以第 6-9 项是补上的。
+> 同时修掉了 front matter 解析的一个 bug：值里含 ` # `（如 `title: "积分 # 改版"`）会被当成注释截断。
 
 示例输出：
 

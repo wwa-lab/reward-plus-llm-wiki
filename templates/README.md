@@ -17,14 +17,16 @@
 | [system-template.md](system-template.md) | 外部系统（对端） | `SYS-####` | `knowledge/external-systems/` |
 | [concept-template.md](concept-template.md) | 领域概念 | `CONCEPT-####` | `knowledge/domain/concepts/` |
 | [control-param-template.md](control-param-template.md) | 控制参数（可调配置） | `CFG-####` | `knowledge/configuration/` |
+| [batch-job-template.md](batch-job-template.md) | 批量作业 | `JOB-####` | `knowledge/batch-and-jobs/` |
 | [project-template.md](project-template.md) | 迁移项目（遗留交付） | `PRJ-####` | `knowledge/projects/` |
 | [business-requirement-template.md](business-requirement-template.md) | 业务需求（Phase 3 用） | `REQ-####` | `requirements/` |
 | [function-spec-template.md](function-spec-template.md) | 功能规格（Phase 3 用） | `FS-####` | `requirements/` |
 
 最后两个（业务需求、功能规格）是**规划阶段**用的，Phase 1 不会用到；提前准备是为了 Phase 3 不用临时设计格式。
 
-还缺 `batch-job-template.md`（`JOB-`）——等首个 `JOB-` 建立时按已有风格补建（见 `knowledge/batch-and-jobs/README.md`）。
 **模板清单与 `knowledge/` 子目录、`knowledge/registry/` 登记表三者必须一一对应**，缺一个就会出现"有模板没地方放"或"有登记表没模板"。
+（`batch-job-template.md` 原本约定"等首个 `JOB-` 建立时补建"；2026-10-10 的合成数据演练跑到了 W6 批量作业梳理，
+证明这个缺口会当场卡住流程，因此提前补建。）
 
 ## 使用方式
 

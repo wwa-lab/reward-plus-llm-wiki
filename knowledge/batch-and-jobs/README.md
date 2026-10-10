@@ -13,7 +13,7 @@
 
 ## 放什么
 
-`JOB-####-<slug>.md`，从模板复制（批量作业模板在 Phase 1 首次使用时补建，暂用 [templates/program-template.md](../../templates/program-template.md) 的程序段落 + 本页字段）。
+`JOB-####-<slug>.md`，从 [templates/batch-job-template.md](../../templates/batch-job-template.md) 复制。
 
 一页作业要讲清：
 
