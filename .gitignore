@@ -22,3 +22,83 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# ---------------------------------------------------------------------------
+# reward-plus-llm-wiki additions
+# ---------------------------------------------------------------------------
+
+# OS / editor metadata
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.iml
+
+# Local environment and credentials — never commit these
+.env
+.env.*
+*.pem
+*.p12
+*.pfx
+*.key
+*.jks
+*.keystore
+credentials*
+secrets*
+*.token
+.aws/
+.ssh/
+
+# Local Agent working data — not part of the knowledge base
+.workbuddy-ai/
+
+# Caches and generated scratch
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.cache/
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# Intermediate Agent analysis — keep the directories and their READMEs,
+# ignore report contents (they are local working artifacts).
+# To share a specific report use: git add -f <path>
+analysis/*
+!analysis/README.md
+!analysis/reports/
+analysis/reports/*
+!analysis/reports/README.md
+
+# ---------------------------------------------------------------------------
+# Do NOT ignore original inputs or knowledge artifacts.
+# The negations below protect them from the broad patterns above.
+# ---------------------------------------------------------------------------
+!raw/**
+!knowledge/**
+!requirements/**
+!tests/**
+!templates/**
+!docs/**
+!agents/**
+
+# ---------------------------------------------------------------------------
+# Exception: configuration snapshots may hold production values
+# (thresholds, rates, sometimes accounts/connection strings).
+# Documented default is "do not commit" — so ignore them by default.
+# To commit a reviewed, sanitized snapshot: git add -f <path>
+# NOTE: .gitignore is a safety net, not a security control.
+# ---------------------------------------------------------------------------
+raw/*/control-files/
+raw/_shared/control-files/
