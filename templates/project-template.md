@@ -26,7 +26,7 @@ reviewed_at: ""
 # <项目名称>
 
 > 本项目页记录的是**遗留系统的一次交付**：某年为了某个 feature 改了什么。
-> 材料在 `raw/PRJ-0000-<slug>/`。
+> 材料在 `raw/PRJ-####/`。
 >
 > **不要把"怎么迁移"写在这里。** 那是 `MT-####`（`requirements/`，Phase 3）。本页只记遗留事实。
 
@@ -41,7 +41,7 @@ reviewed_at: ""
 | 变更性质 | 新增 / 修改 / 废弃 |
 | **是否仍在使用** | 是 / 否 / 未知 |
 | 判断依据 | 例如：无菜单入口、业务确认已停用、仍有交易量 |
-| 材料目录 | `raw/PRJ-0000-<slug>/` |
+| 材料目录 | `raw/PRJ-####/` |
 | LAN 来源 |  |
 
 ## 业务意图
@@ -68,7 +68,7 @@ reviewed_at: ""
 
 | 项 | 内容 |
 |---|---|
-| 本 project 材料目录 | `raw/PRJ-0000-<slug>/` |
+| 本 project 材料目录 | `raw/PRJ-####/` |
 | 已登记来源 | `SRC-####` |
 | 未进库的材料 | LAN 路径 + 为什么没进库 |
 | 是否含敏感内容 | 是 / 否 / 未知 |
@@ -95,8 +95,8 @@ reviewed_at: ""
 
 ## 证据与来源引用
 
-- 来源：`raw/PRJ-0000-<slug>/business-documents/<文件>`，第 N 页 —— <说明>
-- 来源：`raw/PRJ-0000-<slug>/code-scan-results/<文件>`，行 N —— <说明>
+- 来源：`raw/PRJ-####/business-documents/<文件>`，第 N 页 —— <说明>
+- 来源：`raw/PRJ-####/code-scan-results/<文件>`，行 N —— <说明>
 - 来源：SME <姓名 / 角色>，YYYY-MM-DD —— <说明>
 
 ## 已知冲突

@@ -31,7 +31,7 @@ python3 scripts/validate_repo.py
    是否都已在对应登记表里登记（悬空引用 → WARNING）。
 8. **登记表 ↔ 知识页**：登记了但没有知识页（→ WARNING，`TERM-` / `SRC-` 这类"行即记录"的前缀除外）；
    知识页 `status` 与登记表 `status` 不一致（→ WARNING，登记表是权威来源）。
-9. **`raw/` 孤儿目录**：`raw/PRJ-####-*/` 没有对应的 `PRJ-` 登记行 → WARNING。
+9. **`raw/` 孤儿目录**：`raw/PRJ-####/` 没有对应的 `PRJ-` 登记行 → WARNING。
    （反向不检查：材料可以留在 LAN 上，登记行仍然有效。）
 10. **内部链接**：Markdown 相对链接是否指向存在的文件。
 11. **重复**：同一 ID 是否被两个文件占用。

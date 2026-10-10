@@ -35,8 +35,8 @@ RAW_TYPES = [
 
 # raw/ 下允许出现的非 project 条目
 RAW_RESERVED = {"README.md", "_types", "_shared"}
-# project 目录名：PRJ-#### 或 PRJ-####-<slug>
-RAW_PROJECT_RE = re.compile(r"^PRJ-\d{4}(?:-[a-z0-9-]+)?$")
+# project 目录名：严格为 PRJ-####（不带 slug，与 AGENTS.md / README 的 raw/PRJ-####/<类型>/ 一致）
+RAW_PROJECT_RE = re.compile(r"^PRJ-\d{4}$")
 
 REQUIRED_FILES = [
     "README.md",
@@ -342,7 +342,7 @@ def check_raw_layout(root: Path, rep: Report) -> None:
             continue
         if not RAW_PROJECT_RE.match(name):
             rep.error(
-                f"raw/{name}/: 目录名应为 'PRJ-####' 或 'PRJ-####-<slug>'。"
+                f"raw/{name}/: 目录名应为 'PRJ-####'（不带 slug）。"
                 f"材料类型目录不能直接放在 raw/ 下，应为 raw/<PRJ-####>/<类型>/ 或 raw/_shared/<类型>/"
             )
             continue
@@ -489,8 +489,7 @@ def check_orphan_raw_projects(root: Path, rep: Report, registered: dict[str, set
     for entry in sorted(raw.iterdir()):
         if not entry.is_dir() or not RAW_PROJECT_RE.match(entry.name):
             continue
-        pid = entry.name.split("-", 2)
-        fid = f"{pid[0]}-{pid[1]}"
+        fid = entry.name
         if fid not in registered.get("PRJ", set()):
             rep.warn(f"raw/{entry.name}/: 没有对应的 {fid} 登记行（见 knowledge/registry/projects.md）")
 
