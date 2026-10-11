@@ -12,6 +12,7 @@ Python 标准库 only，不引入第三方依赖。只读：不修改任何文�
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
@@ -296,18 +297,86 @@ def front_matter_list(path: Path, key: str) -> list[str]:
     return items
 
 
-def has_key_block(path: Path, key: str) -> bool:
-    """front matter 里是否存在某个键（含嵌套列表键）。"""
-    try:
-        text = path.read_text(encoding="utf-8")
-    except (OSError, UnicodeDecodeError):
-        return False
-    if not text.startswith("---"):
-        return False
+def evidence_refs(path: Path) -> list[str]:
+    """解析 source_refs 的路径字符串列表；不支持的 YAML 形态显式报错。
+
+    仅用于知识页证据，不改变关系字段或 docs/ 的元数据约定。
+    支持行内列表与逐行列表，不支持对象、嵌套结构或多行字符串。
+    """
+    text = path.read_text(encoding="utf-8")
     end = text.find("\n---", 3)
-    if end == -1:
-        return False
-    return re.search(rf"^{re.escape(key)}:", text[3:end], flags=re.M) is not None
+    if not text.startswith("---") or end == -1:
+        return []  # front matter 缺失由 check_artifacts 报告
+    lines = text[3:end].splitlines()
+    declarations = [i for i, line in enumerate(lines) if re.match(r"^source_refs\s*:", line)]
+    if not declarations:
+        return []
+    if len(declarations) != 1:
+        raise ValueError("source_refs 不能重复声明")
+
+    def scalar(value: str) -> str:
+        value = value.strip()
+        if value.startswith('"'):
+            match = re.fullmatch(r'("(?:[^"\\]|\\.)*")\s*(?:#.*)?', value)
+            if not match:
+                raise ValueError("source_refs 包含无效的双引号字符串")
+            try:
+                result = json.loads(match.group(1))
+            except ValueError as exc:
+                raise ValueError("source_refs 双引号字符串包含不支持的转义") from exc
+        elif value.startswith("'"):
+            match = re.fullmatch(r"'((?:[^']|'')*)'\s*(?:#.*)?", value)
+            if not match:
+                raise ValueError("source_refs 包含无效的单引号字符串")
+            result = match.group(1).replace("''", "'")
+        else:
+            result = re.split(r"\s+#", value, maxsplit=1)[0].strip()
+            if (not result or result[0] in "#[]{}&*!>|"
+                    or result.startswith("- ")
+                    or re.search(r":(?:\s|$)", result)
+                    or result.lower() in {"null", "~", "true", "false"}
+                    or re.fullmatch(r"[-+]?\d+(?:\.\d+)?", result)):
+                raise ValueError("source_refs 只支持路径字符串列表，不支持对象或其他 YAML 类型")
+        if not result.strip():
+            raise ValueError("source_refs 不能包含空路径")
+        return result
+
+    start = declarations[0]
+    inline = lines[start].partition(":")[2].strip()
+    body = []
+    for line in lines[start + 1:]:
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        if not line.startswith((" ", "\t", "-")):
+            break
+        body.append(line)
+    if inline and not inline.startswith("#"):
+        match = re.fullmatch(r"\[(.*)\]\s*(?:#.*)?", inline)
+        if not match or body:
+            raise ValueError("source_refs 必须是行内列表或逐行路径列表")
+        content = match.group(1).strip()
+        if not content:
+            return []
+        # 只在引号外切分逗号，保留路径中的逗号与 #。
+        token = r'''\s*("(?:[^"\\]|\\.)*"|'(?:[^']|'')*'|[^,\[\]{}"']+)\s*(,|$)'''
+        refs = []
+        pos = 0
+        while pos < len(content):
+            item = re.match(token, content[pos:])
+            if not item:
+                raise ValueError("source_refs 行内列表包含不支持的格式")
+            refs.append(scalar(item.group(1)))
+            pos += item.end()
+        return refs
+    refs = []
+    indent = None
+    for line in body:
+        item = re.fullmatch(r"( *)-\s+(.+)", line)
+        if not item or (indent is not None and len(item.group(1)) != indent):
+            raise ValueError("source_refs 逐行列表只支持 '- 路径'，不支持嵌套结构")
+        indent = len(item.group(1))
+        refs.append(scalar(item.group(2)))
+    return refs
 
 
 # ---------------------------------------------------------------------------
@@ -406,7 +475,15 @@ def check_evidence_refs(root: Path, rep: Report) -> None:
     """
     for rel_dir, path in iter_artifacts(root):
         rel = path.relative_to(root)
-        for ref in front_matter_list(path, "source_refs"):
+        try:
+            refs = evidence_refs(path)
+        except ValueError as exc:
+            rep.error(f"{rel}: {exc}")
+            continue
+        fm = front_matter(path) or {}
+        if fm.get("status") == "EVIDENCE_FOUND" and not refs:
+            rep.error(f"{rel}: status 为 EVIDENCE_FOUND，source_refs 必须包含至少一个非空路径")
+        for ref in refs:
             if not ref.startswith(("raw/", "knowledge/", "tests/")):
                 continue  # LAN 路径等非仓库路径，不在校验范围
             if DEFAULT_UNCOMMITTED_RE.match(ref):
@@ -582,7 +659,9 @@ def check_registries(root: Path, rep: Report) -> dict[str, set[str]]:
         if not real and last_id == 0:
             rep.note(f"knowledge/registry/{name}: 表内无记录（当前最大 ID = 0）—— 初始状态，正常")
         highest = 0
-        for key in real:
+        for key, locations in real.items():
+            if len(locations) > 1:
+                rep.error(f"knowledge/registry/{name}: ID 重复 '{key}'（{'、'.join(locations)}）")
             highest = max(highest, int(key.split("-")[1]))
         if last_id < highest:
             rep.error(f"knowledge/registry/{name}: 当前最大 ID = {last_id}，低于表内最高 ID {highest}")
@@ -637,8 +716,6 @@ def check_artifacts(root: Path, rep: Report, registered: dict[str, set[str]]) ->
             if fid not in registered.get(prefix, set()):
                 rep.error(f"{rel}: ID '{fid}' 未登记在 knowledge/registry/ 对应表中")
 
-            if status == "EVIDENCE_FOUND" and not has_key_block(path, "source_refs"):
-                rep.warn(f"{rel}: status 为 EVIDENCE_FOUND 但缺少 source_refs")
             if status == "SME_CONFIRMED":
                 if not fm.get("reviewed_by") or not fm.get("reviewed_at"):
                     rep.error(f"{rel}: status 为 SME_CONFIRMED 但缺少 reviewed_by / reviewed_at")
