@@ -1,5 +1,9 @@
 # tests/ — 验证规格
 
+本目录包含两类用途：下述 `validation/` 是 Reward Plus 业务验证规格；
+[agent-evals/](agent-evals/README.md) 是 Agent 产物核验的合成演练，不分配业务 `TEST-` ID。
+合成演练记录留在 `analysis/reports/`，不能作为遗留系统测试通过或 SME 确认的证据。
+
 > 说明：`tests/` 不在初始结构清单里，是为"测试知识页"保留的小扩展。
 > 原始材料在 `raw/`，**派生出来的可复用规格**放 `tests/validation/`。
 
@@ -41,4 +45,5 @@ Phase 4 时在两侧环境跑同一批 `TEST-####`，把对比结果记回用例
 
 ## 现在该做什么
 
-等到 `knowledge/` 里至少有一个功能规格或一条规则值得验证时再开始。没有验证对象就先不写用例。
+业务验证等到 `knowledge/` 里至少有一个功能规格或一条规则值得验证时再开始。
+没有业务验证对象就先不写 `TEST-` 用例；Agent 合成演练可独立运行。

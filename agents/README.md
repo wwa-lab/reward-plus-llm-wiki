@@ -4,6 +4,13 @@
 
 配合阅读：[../AGENTS.md](../AGENTS.md)（硬性规则摘要）、[../CONTRIBUTING.md](../CONTRIBUTING.md)（命名与 ID）、[../docs/workflows.md](../docs/workflows.md)（分步流程）。
 
+## W2/W3 的默认执行入口
+
+用户要求分析扫描结果、整理程序关系或抽取业务规则时，即进入 W2/W3；不要求用户说出工作流编号、
+复制根 README 的提示词或另说“请做评测”。Agent 在分析前读取[任务内核验规则](../docs/evidence-and-validation.md#10-w2w3-的任务内核验)，
+先找已有报告和缺口，再完成分析、修正及交付前复核。记录与内容摘要由 Agent 维护，具体顺序见该规则 §10.0。
+这是当前任务内的默认行为；W10 的人工评审权限不变。
+
 ## 仓库定位
 
 `reward-plus-llm-wiki` 是 Reward Plus（信用卡积分系统，IBM i / AS400）的**知识仓库**，服务于未来的 Java 迁移。

@@ -354,6 +354,11 @@ AGENTS.md、CONTRIBUTING.md 和 agents/README.md，严格按其中的规则工�
     （FUNC-0001 / PROG-0001 / RULE-0001 / DATA-0001 / IF-0001 / SYS-0001 /
      TERM-0001 / CONCEPT-0001 / CFG-0001 / MENU-0001 / JOB-0001 / PRJ-0001 /
      TEST-0001 / SRC-0001）。
+    分析扫描结果或抽取业务规则时，自动按 docs/evidence-and-validation.md 第 10 节执行 W2/W3 核验：
+    先检索并续写适用报告、沿用缺口动作历史；清单与摘要由 Agent 生成，无需用户另行要求。
+    核实已有记录与本次材料清单（含新增证据），自动修正有明确依据的草稿错误并复核；
+    按共同补证动作合并缺口，条件未变时不重复询问，但仍报告未完成部分和重大阻塞。
+    核验记录使用 analysis/reports/README.md 的模板，随同一分析报告保存；不自动晋升知识状态。
 12. 最后输出变更摘要：新增/修改了哪些文件、登记了哪些 ID、哪些标为
     NEEDS_REVIEW、哪些存在冲突、还有哪些待评审任务。
 13. 只有在明确记录了确认人和日期的情况下才能使用 SME_CONFIRMED；宁可标
