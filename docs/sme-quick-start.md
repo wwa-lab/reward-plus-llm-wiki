@@ -165,9 +165,32 @@ S7 校验与提交 ◀─ S6 SME 审阅 ◀─ S5 测试与影响 ◀───�
 
 ### 6.0 一次性准备
 
-1. **在仓库根目录用 Agent 打开仓库。** Cursor 和 Codex 会自动读取 `AGENTS.md`。其他 Agent 工具，请先让它阅读 `AGENTS.md` 和 `agents/README.md`。
-2. **确认材料可以进入：** 材料允许进入该仓库，并且你使用的 Agent 工具已获批准可以处理内部材料。两者都要满足。
-3. **确认 PRJ：** 查看 `knowledge/registry/projects.md`，找到对应的 `PRJ-####`。没有就告诉协调人登记。
+公司只批准 **OpenCode** 和 **GitHub Copilot**，以下步骤只针对这两者。
+
+1. **确认前提：**
+   - 你有有效的 GitHub Copilot 许可。
+   - 公司 GitHub 组织允许 OpenCode 接入。如果被限制，需要管理员批准。
+   - OpenCode 版本由 IT 统一安装。官方文档提示两代版本可能冲突，不要自己装另一个版本。
+2. **在仓库根目录启动 OpenCode：**
+
+   ```bash
+   cd <仓库根目录>
+   opencode
+   ```
+
+3. **连接 Copilot：** 在 OpenCode 里输入 `/connect`，选择 GitHub Copilot，然后在浏览器打开 github.com/login/device，输入终端里显示的验证码。用 `/models` 选择模型（以当前界面为准）。登录失败时，运行 `opencode auth list` 查看凭证是否已写入。
+4. **验证规则是否生效（必做，不能跳过）：** 输入
+
+   > 请先阅读 AGENTS.md，告诉我这个仓库的三条硬规则，并说明你读了哪个文件。
+
+   - 能准确说出规则，并指出读了 `AGENTS.md`，才继续。
+   - 说没读，或答不出来，就不要进入真实材料。之后每次会话开头都要显式要求它先读 `AGENTS.md`，并请协调人确认方案。
+   - 背景：Copilot 下 OpenCode 曾忽略 `AGENTS.md`（[anomalyco/opencode #1130](https://github.com/anomalyco/opencode/issues/1130)），我们没有查到该问题已修复。
+5. **不要运行 `/init`。** 官方文档说它会分析项目并创建 `AGENTS.md`。本仓库已有这个文件，运行它可能覆盖现有规则。
+6. **确认材料可以进入：** 材料允许进入该仓库，并且你使用的工具已获批准可以处理内部材料。两者都要满足。
+7. **确认 PRJ：** 查看 `knowledge/registry/projects.md`，找到对应的 `PRJ-####`。没有就告诉协调人登记。
+
+> 只有 `/connect`、`/init`、`/undo`、`/redo` 来自官方文档。其他命令和按键以当前界面提示为准。Copilot 的登录步骤来自第三方教程，实际操作可能随版本变化。
 
 ### 6.A 按 project 导入文档与代码扫描结果（最常见）
 
