@@ -65,10 +65,9 @@
    各类型的处理规则见 `raw/_types/`。
    文件放进去后**不要再修改**，需要转换版本请放 `analysis/`。
 
-4. **用 Cursor 打开仓库**
-   Agent 会自动读到 [AGENTS.md](AGENTS.md) 和 [agents/README.md](agents/README.md) 里的操作规则。
+4. **用公司批准的 Agent 工具打开仓库**（OpenCode 或 GitHub Copilot），并先让它阅读 [AGENTS.md](AGENTS.md) 和 [agents/README.md](agents/README.md)。Copilot 下需要先验证，见 [docs/sme-quick-start.md](docs/sme-quick-start.md) 第 6.0 节。
 
-5. **让 Cursor Agent 先读新材料和已有知识**
+5. **让 Agent 先读新材料和已有知识**
    直接复制 [7.9 的提示词](#79-可直接复制的-agent-提示词)，把新文件路径填进去。
 
 6. **证据不足时，先落在 `analysis/`**
@@ -240,7 +239,7 @@ raw/  ──▶  analysis/  ──▶  knowledge/  ──▶  requirements/  ─
 * ✅ 稳定 ID 命名规范与登记表（Markdown，轻量），共 14 个前缀：`FUNC-` `PROG-` `RULE-` `DATA-` `IF-` `SYS-` `TERM-` `CONCEPT-` `CFG-` `MENU-` `JOB-` `PRJ-` `TEST-` `SRC-`
 * ✅ `raw/` 的 project 优先组织（`raw/PRJ-####/<类型>/` + `raw/_shared/` + `raw/_types/` 规则层）
 * ✅ 证据与评审规则文档化
-* ✅ 面向 Cursor Agent 的手动使用说明与可复制提示词
+* ✅ 面向公司批准 Agent 工具（OpenCode / GitHub Copilot）的手动使用说明与可复制提示词
 * ✅ 一个纯标准库的结构/链接/ID 校验脚本（`scripts/validate_repo.py`，已实际运行验证）
 
 ### 规划中（**尚未实现，不要当成已有**）
@@ -310,7 +309,7 @@ raw/  ──▶  analysis/  ──▶  knowledge/  ──▶  requirements/  ─
 
 ## 7.9 可直接复制的 Agent 提示词
 
-新材料进来时，把下面这段复制到 Cursor Agent（把 `<新文件路径>`、`<PRJ-#### 或"待判定">` 换成实际值）：
+新材料进来时，把下面这段复制到 Agent（OpenCode 或 GitHub Copilot 均可），并把 `<新文件路径>`、`<PRJ-#### 或"待判定">` 换成实际值：
 
 ```text
 你是 Reward Plus 遗留系统知识库的协助 Agent。请先阅读仓库根目录下的 README.md、
@@ -432,7 +431,6 @@ AGENTS.md、CONTRIBUTING.md 和 agents/README.md，严格按其中的规则工�
 
 - 协调人和 SME 名单
 - 试点 PRJ 和程序
-- `_MANIFEST.md` 模板（W1 要求，仓库中尚无）
 - 代码扫描和配置导出的负责人，以及导出方式
 - 公开仓库的处理方式，以及 README 第 7.2 节的仓库地址（迁移后更新）
 

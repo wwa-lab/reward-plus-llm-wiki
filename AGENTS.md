@@ -1,6 +1,6 @@
 # AGENTS.md — Agent 硬性规则
 
-在 Cursor / Codex / 其他 Agent 里打开本仓库时，先读这个文件。
+在公司批准的 Agent 工具（OpenCode 或 GitHub Copilot）中打开本仓库时，先读这个文件。
 完整规则与工作流见 [agents/README.md](agents/README.md)，细则见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 这是什么仓库

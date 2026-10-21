@@ -1,6 +1,6 @@
 # agents/ — Agent 如何使用本仓库
 
-给 Cursor / Codex / 其他 Agent 看的操作说明。人也要看——这是 Agent 行为的契约，评审时按它检查。
+给 OpenCode、GitHub Copilot 等 Agent 看的操作说明。人也要看——这是 Agent 行为的契约，评审时按它检查。
 
 配合阅读：[../AGENTS.md](../AGENTS.md)（硬性规则摘要）、[../CONTRIBUTING.md](../CONTRIBUTING.md)（命名与 ID）、[../docs/workflows.md](../docs/workflows.md)（分步流程）。
 

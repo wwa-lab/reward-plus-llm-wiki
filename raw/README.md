@@ -102,20 +102,7 @@ redemption-flow.png
 
 ## Manifest
 
-**每个 project 目录一份 `_MANIFEST.md`**，说明这批材料是什么：
-
-```markdown
-# 交付清单：<project 名称>
-
-- 对应项目：`PRJ-####`
-- 收到日期：YYYY-MM-DD
-- 提供方：<团队 / 系统 / 人>
-- LAN 来源：<\\server\share\... 或说明"仅登记，未进库">
-- 版本 / 范围：<例如 2026-09 全量扫描，覆盖 XXXLIB>
-- 导出方式：<例如 由 XXX 工具导出>
-- 文件清单：<文件名 —— 类型 —— 说明>
-- 已知限制：<例如 未包含 CL 程序>
-```
+**每个 project 目录一份 `_MANIFEST.md`**，说明这批材料是什么。模板见 [templates/manifest-template.md](../templates/manifest-template.md)，复制到 `raw/PRJ-####/_MANIFEST.md` 后填写。
 
 `_MANIFEST.md` 是 `raw/` 里唯一允许在初次交付之后新建的文件类型。
 
