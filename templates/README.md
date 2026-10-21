@@ -52,3 +52,12 @@
 
 模板中的所有示例值都用 `<尖括号>` 或明确标注"（示例，非真实）"。
 **绝不允许**把真实 Reward Plus 的程序名、规则、接口、内部路径写进模板示例。
+
+## SME 辅助模板（非知识页）
+
+以下两份文件给业务 SME 和 AS400 SME 使用，**不对应任何知识页目录，也不带 ID**，校验脚本不检查它们的 front matter。
+
+| 文件 | 用途 |
+|---|---|
+| [sme-quick-guide.md](sme-quick-guide.md) | 速查卡：SME 要判断什么、怎么看依据、哪些不能提交 |
+| [sme-review-sheet.md](sme-review-sheet.md) | 审阅表：Agent 结论 + 原文依据 + 判断列，供 SME 填写，协调人据此更新状态 |
